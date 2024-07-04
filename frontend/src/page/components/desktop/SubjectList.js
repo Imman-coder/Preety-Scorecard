@@ -5,43 +5,16 @@ import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
 import { styled } from '@mui/material/styles';
-import { Button } from "@mui/material";
-import Typography from '@mui/material/Typography';
-import CardContent from '@mui/material/CardContent';
-import Chip from '@mui/material/Chip';
-import Card from '@mui/material/Card';
-import { FailChip, PassChip } from "../common/chips";
 import { columns_data } from "../common/utils";
 
 
 export function DesktopSubjectList({ data, isLoadingUserData }) {
 
-    const [sortConfig, setSortConfig] = useState({ key: 0, direction: 'ascending' })
-    const [subjectData, setSubjectData] = useState([])
-    const [titleData, setTitleData] = useState([])
     const [newSubjectData, setNewSubjectData] = useState([])
     const [newTitleData, setNewTitleData] = useState([])
 
 
-
-
     useEffect(() => {
-        console.log(sortConfig);
-        subjectData.sort((a, b) => {
-            if (a[sortConfig.key] < b[sortConfig.key]) {
-                return sortConfig.direction === 'descending' ? -1 : 1;
-            }
-            if (a[sortConfig.key] > b[sortConfig.key]) {
-                return sortConfig.direction === 'descending' ? 1 : -1;
-            }
-            return 0;
-        })
-    }, [subjectData, sortConfig])
-
-
-    useEffect(() => {
-        setTitleData(data.configurationJson || [])
-        setSubjectData(data.data.subjects || [])
 
         let cols = [];
 
@@ -64,17 +37,6 @@ export function DesktopSubjectList({ data, isLoadingUserData }) {
         setNewSubjectData(cols)
     }, [data])
 
-    useEffect(() => {
-        console.log(newSubjectData);
-    }, [newSubjectData])
-
-    const requestSort = key => {
-        let direction = 'ascending';
-        if (sortConfig && sortConfig.key === key && sortConfig.direction === 'ascending') {
-            direction = 'descending';
-        }
-        setSortConfig({ key, direction });
-    }
 
 
     return <>
