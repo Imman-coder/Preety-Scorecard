@@ -1,6 +1,8 @@
 async function GetStudentTestResultController(req, res) {
     const delay = process.env.TEST_RESPONSE_DELAY
     try {
+        let { result_id, registration_number } = req.body
+        data.data.regdNo = registration_number
         setTimeout(()=>{
             res.json(data)
         },delay)
@@ -12,6 +14,7 @@ async function GetStudentTestResultController(req, res) {
 
 
 let data = {
+    "info":"This is a Dummy data, Use this for testing purpose only",
     "data": {
         "subjects": [
             {

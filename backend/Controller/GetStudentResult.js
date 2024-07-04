@@ -41,8 +41,14 @@ async function GetStudentResultController(req, res) {
             return res.status(400).json({ success: false, message: "Invalid Registration Number" })
         }
 
-        // parse the response data to suitable format and send to client
-        res.json(parseResponse(response.data))
+        // parsing the data
+        const data = parseResponse(response.data)
+        
+        // adding registration number to the response
+        data.data.regdNo = registration_number
+
+        // send response to client
+        res.json(data)
     } catch (error) {
         console.error(error);
         res.status(500).send('An error occurred');

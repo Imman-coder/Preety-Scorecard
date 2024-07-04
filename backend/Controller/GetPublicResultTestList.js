@@ -11,6 +11,7 @@ async function GetPublicResultTestListController(req, res) {
 };
 
 let data = {
+    "info":"This is Dummy data, Use it for testing purpose only",
     "data": {
         "2020": {
             "1": {
