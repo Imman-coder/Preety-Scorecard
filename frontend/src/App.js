@@ -3,7 +3,7 @@ import Main from './page/main';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
 import { createTheme } from '@mui/material/styles';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 
 
@@ -22,7 +22,11 @@ const themeDark = createTheme({
 
 function App() {
 
-  const [darkTheme, setDarkTheme] = useState(false)
+  const [darkTheme, setDarkTheme] = useState(localStorage.getItem("darktheme") =="true")
+
+  useEffect(()=>{
+    localStorage.setItem("darktheme",darkTheme);
+  },[darkTheme])
 
   return (
     <>
@@ -40,7 +44,7 @@ function App() {
               <div>
                 Dark Mode
                 <Switch
-                  value={darkTheme}
+                  checked={darkTheme}
                   onChange={(e)=>setDarkTheme(e.target.checked)}
                 ></Switch>
               </div>
