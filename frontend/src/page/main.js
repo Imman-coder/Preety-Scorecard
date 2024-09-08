@@ -34,6 +34,7 @@ export default function Main() {
     const [year, setYear] = useState("")
     const [sem, setSem] = useState("")
     const [branch, setBranch] = useState("")
+    const [type, setType] = useState("")
     const [regdno, setregdno] = useState(0)
     const [LoadingUserData, setLoadingUserData] = useState(false)
     const [LoadingPublicData, setLoadingPublicData] = useState(false)
@@ -55,7 +56,7 @@ export default function Main() {
         const makeRequest = async () => {
 
             const response = await axios.post("/getStudentResult", JSON.stringify({
-                result_id: publicResultList.data[year][sem][branch],
+                result_id: publicResultList.data[year][sem][branch][type],
                 registration_number: regdno
             }),
                 {
@@ -66,7 +67,7 @@ export default function Main() {
             setStudentResult(response.data)
         }
 
-        
+
         setLoadingUserData(true)
         await makeRequest()
         setLoadingUserData(false)
@@ -112,30 +113,41 @@ export default function Main() {
 
 
                 <div className='dropmenu'>
+                    <div className='ids'>
 
-                    <Dropdown
-                        label={"Select Year"}
-                        k={"year"}
-                        items={Object.keys(publicResultList.data || [])}
-                        getter={year}
-                        setter={setYear}
-                    />
+                        <Dropdown
+                            label={"Select Year"}
+                            k={"year"}
+                            items={Object.keys(publicResultList.data || [])}
+                            getter={year}
+                            setter={setYear}
+                        />
 
-                    <Dropdown
-                        label={"Select Semester"}
-                        k={"sem"}
-                        items={Object.keys((year !== "" && publicResultList.data && publicResultList.data[year]) || [])}
-                        getter={sem}
-                        setter={setSem}
-                    />
+                        <Dropdown
+                            label={"Select Semester"}
+                            k={"sem"}
+                            items={Object.keys((year !== "" && publicResultList.data && publicResultList.data[year]) || [])}
+                            getter={sem}
+                            setter={setSem}
+                        />
+                    </div>
+                    <div className='ids'>
 
-                    <Dropdown
-                        label={"Select Branch"}
-                        k={"branch"}
-                        items={Object.keys((publicResultList.data && publicResultList.data[year] && publicResultList.data[year][sem]) || [])}
-                        getter={branch}
-                        setter={setBranch}
-                    />
+                        <Dropdown
+                            label={"Select Branch"}
+                            k={"branch"}
+                            items={Object.keys((publicResultList.data && publicResultList.data[year] && publicResultList.data[year][sem]) || [])}
+                            getter={branch}
+                            setter={setBranch}
+                        />
+                        <Dropdown
+                            label={"Select Type"}
+                            k={"type"}
+                            items={Object.keys((publicResultList.data && publicResultList.data[year] && publicResultList.data[year][sem] && publicResultList.data[year][sem][branch]) || [])}
+                            getter={type}
+                            setter={setType}
+                        />
+                    </div>
 
 
                 </div>
@@ -153,7 +165,7 @@ export default function Main() {
                         onChange={(v) => { setregdno(v.target.value) }}
                     />
 
-                    <Button variant='contained' onClick={fetchStudentResult} disabled={(publicResultList.data === undefined || year === "" || sem === "" || branch === "" || regdno === "" || LoadingUserData)} >
+                    <Button variant='contained' onClick={fetchStudentResult} disabled={(publicResultList.data === undefined || type == "" || year === "" || sem === "" || branch === "" || regdno === "" || LoadingUserData)} >
                         Get Result
                     </Button>
 
@@ -175,7 +187,7 @@ export default function Main() {
                 <MobileSubjectList
                     data={studentResult}
 
-                />  
+                />
             </Mobile>
         </Box>
     </>

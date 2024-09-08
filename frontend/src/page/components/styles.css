@@ -51,6 +51,13 @@ td{
   background: #EFF1F6;
 }
 
+.ids{
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  flex-wrap: wrap;
+
+}
 
 
 

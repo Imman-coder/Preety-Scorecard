@@ -45,10 +45,10 @@ async function GetPublicResultListController(req, res) {
 */
 function parseResponse(data) {
 
-    const regex = /.*(\d).*(20\d\d).*(CSE|CE|ME|EE|EEE|ETC).*/gm;
+    const regex = /(MTECH|BTECH|PhD).*(\d).*(20\d\d).*(CSE|CE|ME|EE|EEE|ETC|EPS) {1,3}(RESULT|(BACK) RESULT|(SPL) RESULT)/gm;
     
     // skeliton response initialization
-    let newli = { "data": {}, "type": "year -> sem -> branch -> ==ID== " }
+    let newli = { "data": {}, "type": "year -> sem -> branch -> Regular/Back -> ==ID== " }
     
     // shorthand decleration
     let li = data.data.resultList
@@ -64,13 +64,21 @@ function parseResponse(data) {
         m = [...m][0]
 
         // if not found any then go to next
-        if( m == undefined) continue  
+        if( m == undefined) {
+            console.log(name);
+            continue
+        }  
+
+        // console.log(m);
 
         
-
-        let sem = m[1]
-        let year = m[2]
-        let branch = m[3]
+        let course = m[1].toUpperCase()
+        let sem = m[2]
+        let year = m[3]
+        let branch = m[4]
+        let isBack = (m[6] != undefined) ? "BACK" : "REGULAR"
+        
+        if(m[7] || course == "PHD" || course == "MTECH") continue
 
         // Saftey check handle to prevent error
         if (newli["data"][year] == undefined)
@@ -79,9 +87,11 @@ function parseResponse(data) {
             newli["data"][year][sem] = {}
         if (newli["data"][year][sem][branch] == undefined)
             newli["data"][year][sem][branch] = {}
+        if (newli["data"][year][sem][branch][isBack] == undefined)
+            newli["data"][year][sem][branch][isBack] = {}
 
         // copying data to new variable for easy management
-        newli["data"][year][sem][branch] = parseInt(key)
+        newli["data"][year][sem][branch][isBack] = parseInt(key)
     };
 
     return newli;
