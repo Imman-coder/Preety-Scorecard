@@ -64,7 +64,9 @@ function parseResponse(data) {
         m = [...m][0]
 
         // if not found any then go to next
-        // if( m == undefined) continue  
+        if( m == undefined) continue  
+
+        
 
         let sem = m[1]
         let year = m[2]
