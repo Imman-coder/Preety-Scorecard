@@ -48,7 +48,6 @@ function App() {
                   onChange={(e)=>setDarkTheme(e.target.checked)}
                 ></Switch>
               </div>
-              <Button href='https://github.com/Imman-coder/Preety-Scorecard' sx={{ color: '#fff' }} >Github</Button>
             </Toolbar>
           </AppBar>
           <Main />
