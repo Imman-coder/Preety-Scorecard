@@ -245,7 +245,7 @@ table.table td  {
 
 
 .prints {
-    /*display: none;*/
+    display: none;
 }
 
 @media print {
