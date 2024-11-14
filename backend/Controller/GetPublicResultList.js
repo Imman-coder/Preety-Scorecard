@@ -17,7 +17,7 @@ const { CreateConfigForPublicList } = require('./Utils');
 async function GetPublicResultListController(req, res) {
     try {
         // creating config to make request to the server for publicly available list
-        let config = CreateConfigForPublicList()
+        let config = CreateConfigForPublicList(9999)
         
         // make the request
         const response = await axios.request(config)
