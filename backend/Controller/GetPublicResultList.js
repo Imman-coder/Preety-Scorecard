@@ -28,7 +28,7 @@ async function GetPublicResultListController(req, res) {
         console.error(error);
         res.status(500).send('An error occurred');
     }
-};
+}
 
 
 /**
@@ -64,7 +64,7 @@ function parseResponse(data) {
         m = [...m][0]
 
         // if not found any then go to next
-        if( m == undefined) {
+        if( m === undefined) {
             console.log(name);
             continue
         }  
@@ -76,23 +76,23 @@ function parseResponse(data) {
         let sem = m[2]
         let year = m[3]
         let branch = m[4]
-        let isBack = (m[6] != undefined) ? "BACK" : "REGULAR"
+        let isBack = (m[6] !== undefined) ? "BACK" : "REGULAR"
         
-        if(m[7] || course == "PHD" || course == "MTECH") continue
+        if(m[7] || course === "PHD" || course === "MTECH") continue
 
-        // Saftey check handle to prevent error
-        if (newli["data"][year] == undefined)
+        // Safety check handle to prevent error
+        if (newli["data"][year] === undefined)
             newli["data"][year] = {}
-        if (newli["data"][year][sem] == undefined)
+        if (newli["data"][year][sem] === undefined)
             newli["data"][year][sem] = {}
-        if (newli["data"][year][sem][branch] == undefined)
+        if (newli["data"][year][sem][branch] === undefined)
             newli["data"][year][sem][branch] = {}
-        if (newli["data"][year][sem][branch][isBack] == undefined)
+        if (newli["data"][year][sem][branch][isBack] === undefined)
             newli["data"][year][sem][branch][isBack] = {}
 
         // copying data to new variable for easy management
         newli["data"][year][sem][branch][isBack] = parseInt(key)
-    };
+    }
 
     return newli;
 }

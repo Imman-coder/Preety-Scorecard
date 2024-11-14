@@ -1,4 +1,4 @@
-import { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { useMediaQuery } from 'react-responsive'
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -14,6 +14,7 @@ import { Box } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
+import Printer from "./Printer";
 
 const Desktop = ({ children }) => {
     const isDesktop = useMediaQuery({ minWidth: 992 })
@@ -25,7 +26,7 @@ const Mobile = ({ children }) => {
     return isMobile ? children : null
 }
 
-export default function Main() {
+export default function Main({setPrinterRef}) {
 
     const [publicResultList, setPublicResultList] = useState({})
     const [studentResult, setStudentResult] = useState({ data: {} })
@@ -65,6 +66,18 @@ export default function Main() {
             );
 
             setStudentResult(response.data)
+
+            setPrinterRef(<Printer daa={{
+                resultTitle: "BTECH 3RD SEM 2021 A.B. CSE RESULT",
+                hallTicketNo: "DRMU2101229080",
+                data: response.data.data,
+                configurationJson: response.data.configurationJson,
+                CGPA: response.data.data.cgpa,
+                success: response.data.success,
+                studentName: response.data.data.studentName,
+                customHeader: response.data.data.customHeader,
+                customFooter: response.data.data.customFooter
+            }}/>)
         }
 
 
@@ -162,10 +175,13 @@ export default function Main() {
                         type='number'
                         variant="outlined"
                         value={regdno}
-                        onChange={(v) => { setregdno(v.target.value) }}
+                        onChange={(v) => {
+                            setregdno(v.target.value)
+                        }}
                     />
 
-                    <Button variant='contained' onClick={fetchStudentResult} disabled={(publicResultList.data === undefined || type == "" || year === "" || sem === "" || branch === "" || regdno === "" || LoadingUserData)} >
+                    <Button variant='contained' onClick={fetchStudentResult}
+                            disabled={(publicResultList.data === undefined || type === "" || year === "" || sem === "" || branch === "" || regdno === "" || LoadingUserData)}>
                         Get Result
                     </Button>
 

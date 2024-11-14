@@ -16,6 +16,8 @@ async function GetStudentTestResultController(req, res) {
 let data = {
     "info":"This is a Dummy data, Use this for testing purpose only",
     "data": {
+        "customHeader": "",
+        "customFooter": "",
         "subjects": [
             {
                 "course_name": "DATABASE ENGINEERING LAB",
@@ -286,14 +288,17 @@ let data = {
         "sgpa": 2.64,
         "cgpa": 6.49
     },
+    "success":true,
     "configurationJson": [
         {
-            "field": "course_name",
-            "headerName": "Course Name"
+            "field": "course_code",
+            "headerName": "Subject Code",
+            "displayInWebsite": true
         },
         {
-            "field": "course_code",
-            "headerName": "Course Code"
+            "field": "course_name",
+            "headerName": "Subject Name",
+            "displayInWebsite": true
         },
         {
             "field": "course_choice",
@@ -317,7 +322,8 @@ let data = {
         },
         {
             "field": "grade",
-            "headerName": "Grade"
+            "headerName": "Grade",
+            "displayInWebsite":true
         },
         {
             "field": "grade_points",
@@ -325,7 +331,8 @@ let data = {
         },
         {
             "field": "credit",
-            "headerName": "Credits"
+            "headerName": "Credits",
+            "displayInWebsite":true
         },
         {
             "field": "obtained_credit",

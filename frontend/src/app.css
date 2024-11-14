@@ -1,0 +1,284 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900,100i,200i,300i,400i,500i,600i,700i,800i,900i&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap');
+body {
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    font-size:1rem;
+    font-weight:400;
+    line-height:1.5;
+    color:#212529;
+    text-align:left;
+}
+
+* {
+    font-family: 'Montserrat';
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    text-align: left;
+    background-color: #fff;
+}
+
+body {
+    font-family: "Roboto",sans-serif;
+    font-weight: 300;
+}
+
+html {
+    font-family: sans-serif;
+    line-height: 1.15;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+*,:after,:before {
+    box-sizing: border-box;
+}
+
+.col-md-12 {
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+@media (min-width: 768px){
+    .col-md-12 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+hr {
+    box-sizing: content-box;
+    height: 0;
+    overflow: visible;
+}
+
+hr {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 0;
+    border-top: 1px solid rgba(0,0,0,.1);
+}
+
+.admission-number {
+    margin-top: 25px;
+    align-items: end;
+    display: flex;
+    justify-content: center;
+}
+
+p {
+    margin: 0;
+    padding: 0;
+}
+
+.table-responsive {
+    padding: 1px !important;
+}
+
+.table-responsive {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.resultDetailsTable {
+    margin-top: 20px;
+}
+
+.col-md-9 {
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.result-title {
+    display: flex;
+    align-items: center;
+}
+
+.row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.col-md-4 {
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+/*.customHeaderDesign {*/
+/*    display: none;*/
+/*}*/
+
+.studentDetails {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+/*.customFooterDesign {*/
+/*    display: none;*/
+/*}*/
+
+table {
+    border-collapse: collapse;
+}
+
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
+}
+
+.table-bordered {
+    border: 1px solid #dee2e6;
+}
+
+
+.svg-inline--fa {
+    display: inline-block;
+    font-size: inherit;
+    height: 1em;
+    overflow: visible;
+    vertical-align: -0.125em;
+}
+
+.svg-inline--fa.fa-w-8 {
+    width: 0.5em;
+}
+
+svg:not(:root).svg-inline--fa {
+    overflow: visible;
+}
+
+img {
+    border-style: none;
+    vertical-align: middle;
+}
+
+strong {
+    /*font-weight: bolder;*/
+    /*font-weight: 500;*/
+    font-weight: 700!important;
+}
+
+th {
+    text-align: inherit;
+    text-align: -webkit-match-parent;
+}
+
+table th  {
+    font-weight: bold !important;
+    text-align: left !important;
+    text-transform: capitalize;
+    font-size: 13px !important;
+    word-break: normal;
+    white-space: nowrap;
+    /*font-size: .9rem;*/
+    /*font-weight: 400;*/
+    padding: .75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
+
+.table-bordered th  {
+    border: 1px solid #dee2e6;
+}
+
+.table thead th  {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.table-bordered thead th  {
+    border-bottom-width: 2px;
+}
+
+table.table th  {
+    padding-top: 1.1rem;
+    padding-bottom: 1rem;
+}
+
+table.table thead th  {
+    border-top: none;
+}
+
+table td  {
+    text-align: left;
+    font-size: 13px !important;
+    word-break: normal;
+    white-space: nowrap;
+    /*font-size: .9rem;*/
+    /*font-weight: 300;*/
+    padding: .75rem;
+    vertical-align: top;
+    /*border-top: 1px solid #dee2e6;*/
+}
+
+.table-bordered td  {
+    border: 1px solid #dee2e6;
+}
+
+table.table td  {
+    padding-top: 1.1rem;
+    padding-bottom: 1rem;
+}
+
+
+
+.prints {
+    /*display: none;*/
+}
+
+@media print {
+    .prints{
+        display: block;
+    }
+}
+
+@media print {
+    .college-info {
+        display: block;
+        margin-top: 20px;
+        text-align: center;
+        margin-bottom: 20px
+    }
+
+    .response-college-logo {
+        height: 70px;
+        width: 70px;
+        margin-bottom: 10px
+    }
+
+    .response-college-name {
+        font-size: 26px
+    }
+
+    .table tbody td {
+        border: none!important
+    }
+
+    .customFooterDesign,.customHeaderDesign {
+        display: block;
+        margin-top: 20px;
+        margin-bottom: 20px
+    }
+}

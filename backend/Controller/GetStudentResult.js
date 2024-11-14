@@ -179,20 +179,20 @@ function parseResponse(json) {
 
     }
 
-    return { data: { subjects: fdata, studentName: name, sgpa, cgpa }, configurationJson: conf2 }
+    return { data: { customFooter:json.customFooter, customHeader:json.customHeader, subjects: fdata, studentName: name, sgpa, cgpa }, "success":true, configurationJson: conf2 }
 }
 
 let conf2 = [
-    { field: 'course_name', headerName: "Course Name", },
-    { field: 'course_code', headerName: "Course Code", },
+    { field: 'course_code', headerName: "Subject Code","displayInWebsite": true },
+    { field: 'course_name', headerName: "Subject Name","displayInWebsite": true },
     { field: 'course_choice', headerName: "Course Choice", },
     { field: 'course_type', headerName: "Course Type", },
     { field: 'internal', headerName: "Internal", },
     { field: 'external', headerName: "External", },
     { field: 'total', headerName: "Total", },
-    { field: 'grade', headerName: "Grade", },
+    { field: 'credit', headerName: "Credits","displayInWebsite": true },
     { field: 'grade_points', headerName: "Grade Points", },
-    { field: 'credit', headerName: "Credits", },
+    { field: 'grade', headerName: "Grade","displayInWebsite": true },
     { field: 'obtained_credit', headerName: "Obtained Credits", },
     { field: 'credit_points', headerName: "Credits Points", },
     { field: 'course_credits', headerName: "Course Credits" },

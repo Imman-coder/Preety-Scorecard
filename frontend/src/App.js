@@ -3,7 +3,8 @@ import Main from './page/main';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
 import { createTheme } from '@mui/material/styles';
-import { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
+import './app.css';
 
 
 
@@ -22,7 +23,8 @@ const themeDark = createTheme({
 
 function App() {
 
-  const [darkTheme, setDarkTheme] = useState(localStorage.getItem("darktheme") =="true")
+  const [darkTheme, setDarkTheme] = useState(localStorage.getItem("darktheme") ==="true")
+  const [printerRef, setPrinterRef] = useState()
 
   useEffect(()=>{
     localStorage.setItem("darktheme",darkTheme);
@@ -50,9 +52,13 @@ function App() {
               </div>
             </Toolbar>
           </AppBar>
-          <Main />
+          <Main setPrinterRef={setPrinterRef} />
         </div>
       </ThemeProvider>
+
+      <div>
+        {printerRef}
+      </div>
     </>
   );
 }

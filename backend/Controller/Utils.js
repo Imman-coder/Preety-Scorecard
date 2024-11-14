@@ -20,20 +20,24 @@ function createConfigFromForm(data) {
         maxBodyLength: Infinity,
         url: url,
         headers: {
-            'sec-ch-ua': '"Not/A)Brand";v="8", "Chromium";v="126", "Google Chrome";v="126"',
-            'Accept': 'application/json',
-            'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryu0z4XkrBqYHyjoOA',
-            'DNT': '1',
-            'sec-ch-ua-mobile': '?0',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
-            'sec-ch-ua-platform': '"Windows"',
-            'Sec-Fetch-Site': 'same-origin',
-            'Sec-Fetch-Mode': 'cors',
-            'Sec-Fetch-Dest': 'empty',
             'host': 'portal.vmedulife.com',
-            ...data.getHeaders()
+            'connection': 'keep-alive',
+            'sec-ch-ua-platform': '"Windows"',
+            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36',
+            'accept': 'application/json',
+            'sec-ch-ua': '"Chromium";v="130", "Brave";v="130", "Not?A_Brand";v="99"',
+            ...data.getHeaders(),
+            'sec-ch-ua-mobile': '?0',
+            'sec-gpc': '1',
+            'accept-language': 'en-GB,en;q=0.8',
+            'origin': 'https://portal.vmedulife.com',
+            'sec-fetch-site': 'same-origin',
+            'sec-fetch-mode': 'cors',
+            'sec-fetch-dest': 'empty',
+            'referer': 'https://portal.vmedulife.com/public/assessment/',
+            'accept-encoding': 'gzip, deflate, br, zstd',
         },
-        data: data
+        data : data
     };
 
 }
