@@ -74,12 +74,12 @@ export let columns_data = [
     },
     {
         id: 9,
-        field: 'credit',
+        field: 'credits',
         headerName: "Credits",
     },
     {
         id: 10,
-        field: 'obtained_credit',
+        field: 'obtained_credits',
         headerName: "Obtained Credits",
     },
     {

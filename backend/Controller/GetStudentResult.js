@@ -71,7 +71,7 @@ async function GetStudentResultController(req, res) {
 
 function parseResponse(json) {
     // shorthand declerations
-    data = json.data
+    let data = json.data
     let conf = json.configurationJson
 
     // variable declerations
@@ -81,69 +81,116 @@ function parseResponse(json) {
     let name = json['studentName']
 
     // format to search in the table
-    let orderl = [
-        'courseName',
-        'courseCode',
-        'courseChoice',
-        'courseType',
-        [
-            'Internal',
-            'Internal marks',
-            'Internal max marks',
-            'Internal percentage',
-            'Internal Pass',
-        ], [
-            'External',
-            'External Marks',
-            'External max marks',
-            'External percentage',
-            'External Pass',
-        ], [
-            'Total',
-            'Total Marks',
-            'Total max marks',
-            'Total percentage',
-            'Total pass',
-        ],
-        'Grade',
-        'Grade Points',
-        'Credits',
-        'Obtained Credits',
-        'Credits Points',
-        'courseCredits'
-    ]
+    let orderToShow = {
+        'course_name': {
+            type: 0,
+            matcher: ['course Name',"courseName"]
+        },
+        'course_code': {
+            type: 0,
+            matcher: ['courseCode']
+        },
+        'course_choice': {
+            type: 0,
+            matcher: ['courseChoice']
+        },
+        'course_type': {
+            type: 0,
+            matcher: ['courseType']
+        },
+        'internal': {
+            type: 1,
+            matchers:
+                [
+                    ['Internal marks', 'TH SEC'],
+                    ['Internal max marks', 'TH MAX'],
+                    ['Internal percentage', 'TH %'],
+                    ['Internal Pass', 'TH PASS'],
+                ]
+        },
+        'external': {
+            type: 1,
+            matchers:
+                [
+                    ['External Marks', 'EXT SEC'],
+                    ['External max marks', 'EXT MAX'],
+                    ['External percentage', 'EXT %'],
+                    ['External Pass', 'EXT PASS'],
+                ]
+        },
+        'total':
+        {
+            type: 1,
+            matchers: [
+                ['Total Marks', 'SEC'],
+                ['Total max marks', 'MAX'],
+                ['Total percentage', '%'],
+                ['Total pass', 'TOTAL PASS'],
+            ]
+        },
+        'grade': {
+            type: 0,
+            matcher: ['GRADE',"Grade"]
+        },
+        'grade_points': {
+            type: 0,
+            matcher: ['GRADE POINTS', "Grade Points"]
+        },
+        'credits': {
+            type: 0,
+            matcher: ['CREDITS', "Credits"]
+        },
+        'obtained_credits': {
+            type: 0,
+            matcher: ['OBTAINED CREDITS', "Obtained Credits"]
+        },
+        'credit_points': {
+            type: 0,
+            matcher: ['CREDITS POINTS', "Credits Points"]
+        },
+        'course_credits': {
+            type: 0,
+            matcher: ['courseCredits']
+        }
+    }
 
     // skeliton response initialization
-    let fdata = []
+    let finalSubjectData = []
 
     // mapping all column names with column id from data
     for (const key in conf) {
-        keys[key] = conf[key].columnName
+        keys[conf[key].columnName] = key
     }
 
-    // standardizing the column id for easy parsing
-    for (let i = 0; i < orderl.length; i++) {
+    // standardizing the column id for easy parsing and mapping
+    for (let e in orderToShow) {
 
-        if (orderl[i] instanceof Array) {
-            for (let j = 1; j < orderl[i].length; j++) {
-                let pos = Object.values(keys).indexOf(orderl[i][j])
-                if (pos > -1) {
-                    orderl[i][j] = Object.keys(keys)[pos]
+        if (orderToShow[e].type == 1) {
+            for (let i = 0; i < orderToShow[e].matchers.length; i++) {
+
+                let v = orderToShow[e].matchers[i].find(a => a in keys)
+
+                let pos = keys[v]
+                
+                if (pos) {
+                    orderToShow[e].matchers[i] = [pos]
                 }
             }
-        } else {
-            let pos = Object.values(keys).indexOf(orderl[i])
-            if (pos > -1) {
-                orderl[i] = Object.keys(keys)[pos]
+        } else if (orderToShow[e].type == 0) {
+            let v = orderToShow[e].matcher.find(a => a in keys)
+
+            let pos = keys[v];
+            if (pos ) {
+                orderToShow[e].matcher = [pos]
             }
         }
 
-    }
+    };
 
     // formatting data in the specified format
     for (const key in data) {
         let it = data[key]
-        let lda = {}
+        let current_subject_data = {}
 
         if (key == 'SGPA') {
             sgpa = it
@@ -151,49 +198,62 @@ function parseResponse(json) {
         } else if (it) {
 
             // iterating over all columns and putting in its respective format
-            orderl.forEach((e, i) => {
-                if (e instanceof Array) {
-                    let v1 = Math.trunc(it[e[1]])
-                    let v2 = Math.trunc(it[e[2]])
-                    let v3 = Math.trunc(it[e[3]])
+            for(let order_key in orderToShow){
+                if(orderToShow[order_key].type == 1){
+                    for(let _ in orderToShow[order_key].matchers){
 
-                    v1 = isNaN(v1) ? "-" : v1
-                    v2 = isNaN(v2) ? "-" : v2
-                    v3 = isNaN(v3) ? "-" : v3 + "%"
+                        const secured_marks_key = orderToShow[order_key].matchers[0].find(e => e in it)
+                        const full_marks_key = orderToShow[order_key].matchers[1].find(e => e in it)
+                        const percentage_key = orderToShow[order_key].matchers[2].find(e => e in it)
+                        const final_result_key = orderToShow[order_key].matchers[3].find(e => e in it)
 
-                    let hl = (it[e[4]] ?? "").toLowerCase()
+                        let secured = Math.trunc(it[secured_marks_key])
+                        let full_marks = Math.trunc(it[full_marks_key])                        
+                        let percentage = Math.trunc(it[percentage_key])
 
-                    let vn = '' + v1 + " / " + v2 + " / " + v3
-                    lda[conf2[i].field] = [vn,hl]
+                        secured = isNaN(secured) ? "-" : secured
+                        full_marks = isNaN(full_marks) ? "-" : full_marks
+                        percentage = isNaN(percentage) ? "-" : percentage + "%"
+
+                        let hl = (it[final_result_key] ?? "").toLowerCase()
+
+                        let vn = '' + secured + " / " + full_marks + " / " + percentage
+
+                        const idx = conf2.findIndex(x => x.field == order_key)
+
+                        current_subject_data[conf2[idx].field] = [vn,hl]
+                    }
                 } else {
-                    let vn = it[e]
+                    const key = orderToShow[order_key].matcher.find(x => x in it)
+                    let vn = it[key]
+                    
+                    const idx = conf2.findIndex(x => x.field == order_key)
 
-                    lda[conf2[i].field] = vn
+                    current_subject_data[conf2[idx].field] = vn
                 }
-
-            });
+            }
         }
 
         // pushing every data columns to the list
-        fdata.push(lda)
+        finalSubjectData.push(current_subject_data)
 
     }
 
-    return { data: { customFooter:json.customFooter, customHeader:json.customHeader, subjects: fdata, studentName: name, sgpa, cgpa }, "success":true, configurationJson: conf2 }
+    return { data: { customFooter:json.customFooter, customHeader:json.customHeader, subjects: finalSubjectData, studentName: name, sgpa, cgpa }, "success":true, configurationJson: conf2 }
 }
 
 let conf2 = [
-    { field: 'course_code', headerName: "Subject Code","displayInWebsite": true },
-    { field: 'course_name', headerName: "Subject Name","displayInWebsite": true },
+    { field: 'course_name', headerName: "Subject Name",displayInWebsite: true },
+    { field: 'course_code', headerName: "Subject Code",displayInWebsite: true },
     { field: 'course_choice', headerName: "Course Choice", },
     { field: 'course_type', headerName: "Course Type", },
     { field: 'internal', headerName: "Internal", },
     { field: 'external', headerName: "External", },
     { field: 'total', headerName: "Total", },
-    { field: 'credit', headerName: "Credits","displayInWebsite": true },
+    { field: 'grade', headerName: "Grade",displayInWebsite: true },
+    { field: 'credits', headerName: "Credits",displayInWebsite: true },
     { field: 'grade_points', headerName: "Grade Points", },
-    { field: 'grade', headerName: "Grade","displayInWebsite": true },
-    { field: 'obtained_credit', headerName: "Obtained Credits", },
+    { field: 'obtained_credits', headerName: "Obtained Credits", },
     { field: 'credit_points', headerName: "Credits Points", },
     { field: 'course_credits', headerName: "Course Credits" },
 ]

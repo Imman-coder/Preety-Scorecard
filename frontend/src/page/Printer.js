@@ -151,7 +151,7 @@ function Printer({daa}) {
                     </thead>
                     <tbody>
                     {
-                        state.isResultPublished ?
+                        state.isResultPublished && state.resultDetails.subjects.length>0 ?
                             <>
                                 {
                                     state.resultDetails.subjects.map(result => {
@@ -218,7 +218,7 @@ function Printer({daa}) {
                 </table>
             </div>
             {
-                state.customFooterDesign !== "" &&
+                state.customFooterDesign && state.customFooterDesign !== "" &&
                 <div className="customFooterDesign">
                     {ReactHtmlParser(state.customFooterDesign)}
                 </div>

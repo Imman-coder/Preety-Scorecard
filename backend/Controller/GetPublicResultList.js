@@ -45,8 +45,6 @@ async function GetPublicResultListController(req, res) {
 */
 function parseResponse(data) {
 
-    const regex = /(MTECH|BTECH|PhD).*(\d).*(20\d\d).*(CSE|CE|ME|EE|EEE|ETC|EPS) {1,3}(RESULT|(BACK) RESULT|(SPL) RESULT)/gm;
-    
     // skeliton response initialization
     let newli = { "data": {}, "type": "year -> sem -> branch -> Regular/Back -> ==ID== " }
     
@@ -59,12 +57,10 @@ function parseResponse(data) {
         let name = it.title
 
         // using regex to extract information
-        let m = name.matchAll(regex)
-
-        m = [...m][0]
+        let extractedInfo = extractInfo(name)
 
         // if not found any then go to next
-        if( m === undefined) {
+        if( extractedInfo === undefined) {
             console.log(name);
             continue
         }  
@@ -72,13 +68,13 @@ function parseResponse(data) {
         // console.log(m);
 
         
-        let course = m[1].toUpperCase()
-        let sem = m[2]
-        let year = m[3]
-        let branch = m[4]
-        let isBack = (m[6] !== undefined) ? "BACK" : "REGULAR"
+        let course = extractedInfo[0].toUpperCase()
+        let sem = extractedInfo[1]
+        let year = extractedInfo[2]
+        let branch = extractedInfo[3]
+        let isBack = extractedInfo[4] ? "BACK" : "REGULAR"
         
-        if(m[7] || course === "PHD" || course === "MTECH") continue
+        if(extractedInfo[7] || course === "PHD" || course === "MTECH") continue
 
         // Safety check handle to prevent error
         if (newli["data"][year] === undefined)
@@ -95,6 +91,22 @@ function parseResponse(data) {
     }
 
     return newli;
+}
+
+function extractInfo(name){
+    const course_regex  = /MTECH|BTECH|PhD/gm;
+    const sem_regex = /(\d)(ST|ND|RD|TH|SEM)/gi;
+    const year_regex = /20\d\d/gm;
+    const branch_regex = /\b(CSE|CE|ME|EEE|EE|ETC|SE|EPS|MSD)\b/gm;
+    const back_regex = /(BACK)/gm;
+
+    const course = name.match(course_regex)[0];
+    const sem = [...name.matchAll(sem_regex)][0][1];
+    const year = name.match(year_regex)[0];
+    const branch = name.match(branch_regex)[0];
+    const back = name.match(back_regex) === null ? false : true;
+
+    return([course,sem,year,branch,back])
 }
 
 module.exports = GetPublicResultListController

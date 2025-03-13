@@ -7,7 +7,7 @@ import axios from '../api/axios';
 import { Dropdown } from './components/dropdownMenu';
 import { DesktopSubjectList } from './components/desktop/SubjectList';
 import { MobileSubjectList } from './components/mobile/SubjectList';
-import { Box } from '@mui/material';
+import { Box, Snackbar } from '@mui/material';
 
 
 
@@ -26,7 +26,7 @@ const Mobile = ({ children }) => {
     return isMobile ? children : null
 }
 
-export default function Main({setPrinterRef}) {
+export default function Main({ setPrinterRef }) {
 
     const [publicResultList, setPublicResultList] = useState({})
     const [studentResult, setStudentResult] = useState({ data: {} })
@@ -36,7 +36,7 @@ export default function Main({setPrinterRef}) {
     const [sem, setSem] = useState("")
     const [branch, setBranch] = useState("")
     const [type, setType] = useState("")
-    const [regdno, setregdno] = useState(0)
+    const [regdno, setregdno] = useState("")
     const [LoadingUserData, setLoadingUserData] = useState(false)
     const [LoadingPublicData, setLoadingPublicData] = useState(false)
 
@@ -77,27 +77,22 @@ export default function Main({setPrinterRef}) {
                 studentName: response.data.data.studentName,
                 customHeader: response.data.data.customHeader,
                 customFooter: response.data.data.customFooter
-            }}/>)
+            }} />)
         }
 
-
-        setLoadingUserData(true)
-        await makeRequest()
-        setLoadingUserData(false)
+        try {
+            setLoadingUserData(true)
+            await makeRequest()
+        } catch (error) {
+            setErrorMsg("Something went wrong, Try again!")
+        } finally {
+            setLoadingUserData(false)
+        }
     }
 
     useEffect(() => {
         fetchPublicResultList()
-        // fetchStudentResult()
     }, [])
-
-    useEffect(() => {
-        console.log(studentResult);
-    }, [studentResult])
-
-    useEffect(() => {
-        console.log(year);
-    }, [year])
 
 
     const card = (
@@ -121,91 +116,110 @@ export default function Main({setPrinterRef}) {
 
 
     return <>
-        <Box m={2}>
-            <div>
 
+        {LoadingPublicData ?
+            <div className="loader">
+                LOADING...
+            </div>
+            : (
+                <>
 
-                <div className='dropmenu'>
-                    <div className='ids'>
-
-                        <Dropdown
-                            label={"Select Year"}
-                            k={"year"}
-                            items={Object.keys(publicResultList.data || [])}
-                            getter={year}
-                            setter={setYear}
-                        />
-
-                        <Dropdown
-                            label={"Select Semester"}
-                            k={"sem"}
-                            items={Object.keys((year !== "" && publicResultList.data && publicResultList.data[year]) || [])}
-                            getter={sem}
-                            setter={setSem}
-                        />
-                    </div>
-                    <div className='ids'>
-
-                        <Dropdown
-                            label={"Select Branch"}
-                            k={"branch"}
-                            items={Object.keys((publicResultList.data && publicResultList.data[year] && publicResultList.data[year][sem]) || [])}
-                            getter={branch}
-                            setter={setBranch}
-                        />
-                        <Dropdown
-                            label={"Select Type"}
-                            k={"type"}
-                            items={Object.keys((publicResultList.data && publicResultList.data[year] && publicResultList.data[year][sem] && publicResultList.data[year][sem][branch]) || [])}
-                            getter={type}
-                            setter={setType}
-                        />
-                    </div>
-
-
-                </div>
-
-                <div className='low-col'>
-
-                    <TextField
-                        id="registrationBox"
-                        margin="normal"
-                        label="Registration Number"
-                        size="small"
-                        type='number'
-                        variant="outlined"
-                        value={regdno}
-                        onChange={(v) => {
-                            setregdno(v.target.value)
-                        }}
+                    <Snackbar
+                        open={errorMsg}
+                        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                        autoHideDuration={3000}
+                        onClose={()=>{setErrorMsg("")}}
+                        severity="error"
+                        message="Holy smokes! Something seriously bad happened."
+                        // action={action}
                     />
 
-                    <Button variant='contained' onClick={fetchStudentResult}
-                            disabled={(publicResultList.data === undefined || type === "" || year === "" || sem === "" || branch === "" || regdno === "" || LoadingUserData)}>
-                        Get Result
-                    </Button>
+                    <Box m={2}>
+                        <div>
+                            <div className='dropmenu'>
+                                <div className='ids'>
 
-                </div>
-            </div>
+                                    <Dropdown
+                                        label={"Select Year"}
+                                        k={"year"}
+                                        items={Object.keys(publicResultList.data || [])}
+                                        getter={year}
+                                        setter={setYear}
+                                    />
+
+                                    <Dropdown
+                                        label={"Select Semester"}
+                                        k={"sem"}
+                                        items={Object.keys((year !== "" && publicResultList.data && publicResultList.data[year]) || [])}
+                                        getter={sem}
+                                        setter={setSem}
+                                    />
+                                </div>
+                                <div className='ids'>
+
+                                    <Dropdown
+                                        label={"Select Branch"}
+                                        k={"branch"}
+                                        items={Object.keys((publicResultList.data && publicResultList.data[year] && publicResultList.data[year][sem]) || [])}
+                                        getter={branch}
+                                        setter={setBranch}
+                                    />
+                                    <Dropdown
+                                        label={"Select Type"}
+                                        k={"type"}
+                                        items={Object.keys((publicResultList.data && publicResultList.data[year] && publicResultList.data[year][sem] && publicResultList.data[year][sem][branch]) || [])}
+                                        getter={type}
+                                        setter={setType}
+                                    />
+                                </div>
 
 
-            <Card sx={{ my: 2 }} variant="outlined">{card}</Card>
+                            </div>
+
+                            <div className='low-col'>
+
+                                <TextField
+                                    id="registrationBox"
+                                    margin="normal"
+                                    label="Registration Number"
+                                    size="small"
+                                    type='number'
+                                    variant="outlined"
+                                    value={regdno}
+
+                                    onChange={(e) => {
+                                        setregdno(e.target.value.toString());
+                                    }}
+                                />
+
+                                <Button variant='contained' onClick={fetchStudentResult}
+                                    disabled={(publicResultList.data === undefined || type === "" || year === "" || sem === "" || branch === "" || regdno.length != 10 || LoadingUserData)}>
+                                    {LoadingUserData ? "Loading..." : "Get Result"}
+                                </Button>
+
+                            </div>
+                        </div>
 
 
-            <Desktop>
-                <DesktopSubjectList
-                    data={studentResult}
-                    isLoadingUserData={LoadingUserData}
-                />
-            </Desktop>
+                        <Card sx={{ my: 2 }} variant="outlined">{card}</Card>
 
-            <Mobile>
-                <MobileSubjectList
-                    data={studentResult}
 
-                />
-            </Mobile>
-        </Box>
+                        <Desktop>
+                            <DesktopSubjectList
+                                data={studentResult}
+                                isLoadingUserData={LoadingUserData}
+                            />
+                        </Desktop>
+
+                        <Mobile>
+                            <MobileSubjectList
+                                data={studentResult}
+
+                            />
+                        </Mobile>
+                    </Box>
+                </>
+            )}
     </>
 
 
