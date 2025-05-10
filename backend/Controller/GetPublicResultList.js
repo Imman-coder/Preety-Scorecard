@@ -112,8 +112,7 @@ function extractInfo(name){
     const year = name.match(year_regex)[0];
     const branch = name.match(branch_regex)[0];
     const back = name.match(back_regex) === null ? false : true;
-
-    console.log(name, [course,sem,year,branch,back]);
+    
     return([course,sem,year,branch,back])
 }
 
