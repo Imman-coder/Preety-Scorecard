@@ -56,8 +56,14 @@ function parseResponse(data) {
         let it = li[key]
         let name = it.title
 
-        // using regex to extract information
-        let extractedInfo = extractInfo(name)
+        let extractedInfo;
+        try {
+            // using regex to extract information
+            extractedInfo = extractInfo(name)
+            
+        } catch (error) {
+            continue;
+        }
 
         // if not found any then go to next
         if( extractedInfo === undefined) {
@@ -97,15 +103,17 @@ function extractInfo(name){
     const course_regex  = /MTECH|BTECH|PhD/gm;
     const sem_regex = /(\d)(ST|ND|RD|TH|SEM)/gi;
     const year_regex = /20\d\d/gm;
-    const branch_regex = /\b(CSE|CE|ME|EEE|EE|ETC|SE|EPS|MSD)\b/gm;
+    const branch_regex = /\b(CE|ME|EEE|EE|ETC|SE|EECSE|EPS|CSE\(DS\)|CSE\(CS\)|CSE\(AIML\)|CSE\(IOT\)|CSE\(IT\)|CSE|ETCSE|MSD)\b/gm;
     const back_regex = /(BACK)/gm;
 
+    
     const course = name.match(course_regex)[0];
     const sem = [...name.matchAll(sem_regex)][0][1];
     const year = name.match(year_regex)[0];
     const branch = name.match(branch_regex)[0];
     const back = name.match(back_regex) === null ? false : true;
 
+    console.log(name, [course,sem,year,branch,back]);
     return([course,sem,year,branch,back])
 }
 
